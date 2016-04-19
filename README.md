@@ -14,7 +14,7 @@ I have succesfully built and run emudore on Windows (Visual Studio 2015 required
 and Linux platforms and it should theoretically work on any platform supported by 
 SDL2 provided a C++11 compiler is available.
 
-# Why writting one another C64 emulator?
+# Why am I writing another C64 emulator?
 
 Long story short: to learn a bit more about computer architecture, graphics, 
 C++, etc..  while having some fun!
