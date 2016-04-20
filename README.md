@@ -150,7 +150,7 @@ If you are running a Linux Debian-based distro:
 
 Then simply compile and run:
 
-    make relase
+    make release
     cd build
     ./emudore
 
