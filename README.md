@@ -36,7 +36,7 @@ you might be interested in knowing about emudore's implementation:
 **emulation is instruction-exact**
 
 That's right, on every emulation cycle a single instruction is fetched and interpreted, 
-the number CPU cycles the instruction has taken to execute is used to synchronize the 
+the number of CPU cycles the instruction has taken to execute is used to synchronize the 
 rest of the chips in a C64 board. 
 
 Unfortunately, this is not the best approach, other emulators are able to execute a single 
@@ -189,5 +189,5 @@ developing emudore:
 
 # License
 
-I don't think anybody would ever dare to use this for an actual useful purpose, but just in case, 
+I don't think anybody will ever dare to use this for an actual useful purpose, but just in case, 
 the project is licensed under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0)
