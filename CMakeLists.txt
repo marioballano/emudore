@@ -35,12 +35,19 @@ if (MSVC)
 else()
   add_executable (emudore ${SRC_FILES})
 endif()
+# JavaScript build with emscripten
+if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2 -s USE_SDL=2 --preload-file assets/")
+  set(CMAKE_EXECUTABLE_SUFFIX ".html")
+endif()
 # SDL2 
 # Cmake 2.8 does not provide scripts to find SDL2, adding 
 # them to the cmake module path and here for convenience
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
-find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIR})
+if(NOT CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+  find_package(SDL2 REQUIRED)
+  include_directories(${SDL2_INCLUDE_DIR})
+endif()
 # link
 target_link_libraries(emudore ${SDL2_LIBRARY})
 # copy assets to build directory 
