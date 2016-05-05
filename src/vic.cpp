@@ -39,6 +39,8 @@ Vic::Vic()
   bgcolor_[0] = bgcolor_[1] = bgcolor_[2] = bgcolor_[3] = 0;
   /* control regs */
   cr1_ = cr2_ = 0;
+  /* frame counter */
+  frame_c_ = 0;
   /* default memory pointers */
   screen_mem_ = Memory::kBaseAddrScreen;
   char_mem_   = Memory::kBaseAddrChars;
@@ -106,6 +108,7 @@ bool Vic::emulate()
     if (rstr >= kScreenLines)
     {
       io_->screen_refresh();
+      frame_c_++;
       raster_counter(0);
     }
   }

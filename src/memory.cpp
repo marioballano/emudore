@@ -301,7 +301,7 @@ void Memory::load_ram(const std::string &f, uint16_t baseaddr)
  */
 void Memory::dump()
 {
-  for(int p=0 ; p < kMemSize ; p++)
+  for(unsigned int p=0 ; p < kMemSize ; p++)
   {
     std::cout << read_byte(p);
   }

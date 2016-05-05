@@ -21,6 +21,9 @@
 
 #include "c64.h"
 #include "loader.h"
+#ifdef EMSCRIPTEN
+#include <emscripten.h>
+#endif
 
 C64 *c64;
 Loader *loader;
@@ -30,6 +33,11 @@ bool loader_cb()
   if(!loader->emulate())
     c64->callback(nullptr);
   return true;
+}
+
+void emscripten_loop()
+{
+  c64->emscripten_loop();
 }
 
 int main(int argc, char **argv)
@@ -56,6 +64,10 @@ int main(int argc, char **argv)
       }     
     }
   }
+#ifdef EMSCRIPTEN
+  emscripten_set_main_loop(emscripten_loop,0,0);
+#else
   c64->start();
+#endif
   return 0;
 }

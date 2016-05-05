@@ -98,6 +98,27 @@ void C64::start()
 }
 
 /**
+ * @brief emscripten's main loop
+ */
+void C64::emscripten_loop()
+{
+  unsigned int frame = vic_->frames();
+  while(frame == vic_->frames())
+  {
+    /* CIA1 */
+    cia1_->emulate();
+    /* CIA2 */
+    cia2_->emulate();
+    /* CPU */
+    cpu_->emulate();
+    /* VIC-II */
+    vic_->emulate();
+    /* IO */
+    io_->emulate();
+  }
+}
+ 
+/**
  * @brief runs Klaus Dormann's 6502 test suite 
  *
  * https://github.com/Klaus2m5/6502_65C02_functional_tests

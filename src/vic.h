@@ -52,6 +52,8 @@ class Vic
     uint8_t bgcolor_[4];
     /* cpu sync */
     unsigned int next_raster_at_;
+    /* frame counter */
+    unsigned int frame_c_;
     /* control registers */
     uint8_t cr1_;
     uint8_t cr2_;
@@ -104,6 +106,7 @@ class Vic
     void io(IO *v){io_ = v;};
     void write_register(uint8_t r, uint8_t v);
     uint8_t read_register(uint8_t r);
+    unsigned int frames(){return frame_c_;};
     /* constants */
     static const int kScreenLines = 312;
     static const int kScreenCols  = 504;

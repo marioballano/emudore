@@ -56,6 +56,7 @@ class C64
     C64();
     ~C64();
     void start();
+    void emscripten_loop();
     void callback(std::function<bool()> cb){callback_ = cb;};
     Cpu * cpu(){return cpu_;};
     Memory * memory(){return mem_;};
