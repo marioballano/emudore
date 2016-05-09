@@ -43,9 +43,9 @@ bool emscripten_loader_cb()
   return true;
 }
 
-void set_rom(const char *rom)
+void load_file(const char *file)
 {
-  std::string f(rom);
+  std::string f(file);
   size_t ext_i = f.find_last_of(".");
   if(ext_i != std::string::npos)
   {
@@ -63,7 +63,7 @@ void set_rom(const char *rom)
 void wget_cb(const char *f)
 {
   wget_download_finished = true;
-  set_rom(f);
+  load_file(f);
 }
 
 void emscripten_loop()
@@ -89,7 +89,7 @@ int main(int argc, char **argv)
     }
 #else
     c64->callback(loader_cb);
-    set_rom(argv[1]);
+    load_file(argv[1]);
 #endif 
   }
 #ifdef EMSCRIPTEN
