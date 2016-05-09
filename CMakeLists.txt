@@ -37,8 +37,7 @@ else()
 endif()
 # JavaScript build with emscripten
 if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2 -s USE_SDL=2 --preload-file assets/")
-  set(CMAKE_EXECUTABLE_SUFFIX ".html")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2 -s USE_SDL=2 -s DISABLE_EXCEPTION_CATCHING=0 --preload-file assets/roms/")
 endif()
 # SDL2 
 # Cmake 2.8 does not provide scripts to find SDL2, adding 

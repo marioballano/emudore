@@ -115,6 +115,8 @@ void C64::emscripten_loop()
     vic_->emulate();
     /* IO */
     io_->emulate();
+    /* callback */
+    if(callback_) callback_();
   }
 }
  
