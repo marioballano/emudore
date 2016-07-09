@@ -14,7 +14,7 @@ emudore builds and runs on Linux, Windows (Visual Studio), OSX and even runs in
 your browser thanks to Emscriptem, it should theoretically work on any platform 
 supported by SDL2 provided a C++11 compiler is available.
 
-If you wish to play a bit aroudn without having to go through the hassle of 
+If you wish to play a bit around without having to go through the hassle of 
 compiling it you can try the web build:
 
 * [emudore (boot into CBM BASIC)](http://marioballano.github.io/emudorejs/)
