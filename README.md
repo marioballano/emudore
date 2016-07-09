@@ -10,9 +10,15 @@ fully written from the scratch and built on the top of the following technologie
  * [C++11](https://en.wikipedia.org/wiki/C%2B%2B11)
  * [SDL2](https://www.libsdl.org/download-2.0.php)
 
-I have succesfully built and run emudore on Windows (Visual Studio 2015 required)
-and Linux platforms and it should theoretically work on any platform supported by 
-SDL2 provided a C++11 compiler is available.
+emudore builds and runs on Linux, Windows (Visual Studio), OSX and even runs in
+your browser thanks to Emscriptem, it should theoretically work on any platform 
+supported by SDL2 provided a C++11 compiler is available.
+
+If you wish to play a bit aroudn without having to go through the hassle of 
+compiling it you can try the web build:
+
+* [emudore (boot into CBM BASIC)](http://marioballano.github.io/emudorejs/)
+* [emudore (load Monopole PRG)](http://marioballano.github.io/emudorejs/?load=samples/monopole.prg)
 
 # Why am I writing another C64 emulator?
 
