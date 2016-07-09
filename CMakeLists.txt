@@ -9,8 +9,8 @@ set(SRC_FILES "src/c64.cpp"
               "src/io.cpp"
               "src/loader.cpp"
               "src/main.cpp")
-# GCC 
-if (CMAKE_COMPILER_IS_GNUCXX)
+# GCC and Clang
+if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
 # C++11
