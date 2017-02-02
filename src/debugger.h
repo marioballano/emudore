@@ -42,8 +42,6 @@ class Debugger
     uint8_t * emu_read_mem(size_t sz);
     std::string emu_handle_cmd(const std::string &s);
     void emu_write_mem(uint8_t *mem, size_t sz);
-    uint64_t htonll(uint64_t v);
-    uint64_t ntohll(uint64_t v);
     std::vector<std::string> split_cmd(const std::string &s);
     std::string regs_cmd();
   public:

@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
+#include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <endian.h>
-#include <byteswap.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 
@@ -37,8 +36,13 @@ Debugger::Debugger()
   int e = 1;
   offset_ = 0;
   struct sockaddr_in serv_addr;
-  /* SOCK_NONBLOCK requires kernel >= 2.6.27 */
+  /* SOCK_NONBLOCK requires a Linux kernel >= 2.6.27 */
+#ifdef SOCK_NONBLOCK
   ss_ = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
+#else
+  ss_ = socket(AF_INET, SOCK_STREAM,0);
+  fcntl(ss_, F_SETFL, fcntl(ss_, F_GETFL, 0) | O_NONBLOCK);
+#endif
   if(ss_ < 0)
   {
     D("Debuggger: Error opening socket\n");
@@ -63,18 +67,6 @@ Debugger::Debugger()
 Debugger::~Debugger()
 {
   close(ss_);
-}
-
-uint64_t Debugger::htonll(uint64_t v)
-{
-  if (__BYTE_ORDER == __BIG_ENDIAN) return (v);
-  else return __bswap_64(v);
-}
-
-uint64_t Debugger::ntohll(uint64_t v)
-{
-  if (__BYTE_ORDER == __BIG_ENDIAN) return (v);
-  else return __bswap_64(v);
 }
 
 std::vector<std::string> Debugger::split_cmd(const std::string &s)
