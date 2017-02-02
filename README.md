@@ -121,8 +121,8 @@ emulated, specially if you're running things like a demo.
 
 # Are you bleedin' serious radare2 is supported?
 
-Indeed, for now it's only suppported on Linux (debug) builds, you can grab a fresh
-copy of radare from [github](https://github.com/radare/radare2)
+Indeed, for now it's only suppported on Linux and OSX (debug) builds, you can grab 
+a fresh copy of radare from [github](https://github.com/radare/radare2)
 
 Then fire the emulator up and connect with radare:
 

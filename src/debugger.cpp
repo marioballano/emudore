@@ -159,6 +159,11 @@ bool Debugger::emulate()
   sockfd = accept(ss_, (struct sockaddr *)&sa, &sl);
   if(sockfd > 0)
   {
+    /* unset fd's O_NONBLOCK flag
+     * on Linux reading from the fd seems to block while
+     * on OSX it seems to inherit the socket's non-blocking flag
+     */
+    fcntl(sockfd, F_SETFL, fcntl(sockfd, F_GETFL, 0) &~ O_NONBLOCK);
     D("Debugger: client connected\n");
     /* emulation paused while debugger is connected */
     while(1)
