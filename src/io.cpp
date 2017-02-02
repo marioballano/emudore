@@ -229,10 +229,13 @@ void IO::init_color_palette()
 
 bool IO::emulate()
 {
-  bool retval = true;
+  return retval_;
+}
+
+void IO::process_events()
+{
   SDL_Event event;
-  /* don't be greedy, just process one event per emulation cycle */
-  if(SDL_PollEvent(&event))
+  while(SDL_PollEvent(&event))
   {
     switch(event.type)
     {
@@ -243,7 +246,7 @@ bool IO::emulate()
       handle_keyup(event.key.keysym.scancode);
       break;
     case SDL_QUIT:
-      retval = false;
+      retval_ = false;
       break;
     }
   }
@@ -264,7 +267,6 @@ bool IO::emulate()
     }
     next_key_event_at_ = cpu_->cycles() + kWait;
   }
-  return retval;
 }
 
 // keyboard handling /////////////////////////////////////////////////////////// 
@@ -339,6 +341,9 @@ void IO::screen_refresh()
   SDL_RenderClear(renderer_);
   SDL_RenderCopy(renderer_,texture_, NULL, NULL);
   SDL_RenderPresent(renderer_);
+  /* process SDL events once every frame */
+  process_events();
+  /* perform vertical refresh sync */
   vsync();
 }
 

@@ -50,6 +50,7 @@ class IO
     size_t rows_;
     unsigned int color_palette[16];
     uint8_t keyboard_matrix_[8];
+    bool retval_ = true;
     /* keyboard mappings */
     std::unordered_map<SDL_Keycode,std::pair<int,int>> keymap_;
     std::unordered_map<char,std::vector<SDL_Keycode>> charmap_;
@@ -69,6 +70,7 @@ class IO
     IO();
     ~IO();
     bool emulate();
+    void process_events();
     void cpu(Cpu *v){cpu_=v;};
     void init_color_palette();
     void init_keyboard();
