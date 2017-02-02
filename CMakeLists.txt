@@ -16,10 +16,11 @@ if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 # C++11
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
-# r2 debugging support, for now only available on Linux and
-# enabled on Debug builds, if you want it enabled on release 
+# r2 debugging support, for now only available on Linux 
+# and OSX Debug builds, if you want it enabled on release 
 # mode just remove the second part of the expression
-if(CMAKE_SYSTEM_NAME MATCHES "Linux" AND CMAKE_BUILD_TYPE MATCHES "Debug")
+if(CMAKE_BUILD_TYPE MATCHES "Debug" AND
+  (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME MATCHES "Darwin"))
   add_definitions(-DDEBUGGER_SUPPORT)
   set(SRC_FILES ${SRC_FILES} "src/debugger.cpp")
 endif()         
