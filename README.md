@@ -14,11 +14,19 @@ emudore builds and runs on Linux, Windows (Visual Studio), OSX and even runs in
 your browser thanks to Emscriptem, it should theoretically work on any platform 
 supported by SDL2 provided a C++11 compiler is available.
 
+# JavaScript and WebAssembly builds
+
 If you wish to play a bit around without having to go through the hassle of 
 compiling it you can try the web build:
 
 * [emudore (boot into CBM BASIC)](http://marioballano.github.io/emudorejs/)
 * [emudore (load Monopole PRG)](http://marioballano.github.io/emudorejs/?load=samples/monopole.prg)
+
+A [WebAssembly](https://en.wikipedia.org/wiki/WebAssembly) build of emudore is also available, 
+please note that a browser with WebAssembly support is required to run these demos:
+
+* [emudore (boot into CBM BASIC)](http://marioballano.github.io/emudorewa/)
+* [emudore (load Monopole PRG)](http://marioballano.github.io/emudorewa/?load=samples/monopole.prg)
 
 # Why am I writing another C64 emulator?
 
