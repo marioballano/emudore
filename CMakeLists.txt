@@ -36,9 +36,12 @@ if (MSVC)
 else()
   add_executable (emudore ${SRC_FILES})
 endif()
-# JavaScript build with emscripten
+# JavaScript and WebAssembly builds with emscripten
 if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2 -s USE_SDL=2 -s DISABLE_EXCEPTION_CATCHING=0 --preload-file assets/roms/")
+  if(WASM)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s WASM=1")
+  endif()
 endif()
 # SDL2 
 # Cmake 2.8 does not provide scripts to find SDL2, adding 
