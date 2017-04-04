@@ -1,6 +1,6 @@
 # emudore, a Commodore 64 emulator
 
-![basic] (/pics/basic.gif "basic")
+![basic](/pics/basic.gif "basic")
 
 # What's this?
 
@@ -175,8 +175,8 @@ emudore can also type BASIC listings for you (special keys not supported yet):
 
 Sure.. 
 
-![parallax] (/pics/parallax.png "parallax") ![mario] (/pics/mario.png "mario") ![pacman] (/pics/pacman.png "pacman") 
-![hitmen] (/pics/hitmen.png "hitmen") ![montezuma] (/pics/montezuma.png "montezuma") ![ghostbusters] (/pics/ghostbusters.png "ghostbusters") 
+![parallax](/pics/parallax.png "parallax") ![mario](/pics/mario.png "mario") ![pacman](/pics/pacman.png "pacman") 
+![hitmen](/pics/hitmen.png "hitmen") ![montezuma](/pics/montezuma.png "montezuma") ![ghostbusters](/pics/ghostbusters.png "ghostbusters") 
 
 
 # References
