@@ -142,8 +142,8 @@ gets implemented in radare.
 
 Some pictures of radare in action:
 
-![r2mem] (/pics/r2_mem.png "r2mem") 
-![r2dis] (/pics/r2_dis.png "r2dis")
+![r2mem](/pics/r2_mem.png "r2mem") 
+![r2dis](/pics/r2_dis.png "r2dis")
 
 I hope this feature will come in useful to retrodev reverse engineers :)
 
