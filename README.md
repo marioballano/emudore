@@ -205,7 +205,7 @@ developing emudore:
 
 Some people have forked emudore and experimented with it, some notable forks include:
 
-* [Chris Frant's C64 and NES emulator](https://github.com/cfrantz/emudore)
+* [Chris Frantz's C64 and NES emulator](https://github.com/cfrantz/emudore)
 * [Scott Hutter's bare metal x86-64 emulator](https://github.com/xlar54/emudore64)
 
 # License
