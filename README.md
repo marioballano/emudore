@@ -201,6 +201,13 @@ developing emudore:
  * [Dustlayer's blog](http://dustlayer.com/blog/)
  * [The MOS 6567/6569 video controller (VIC-II) and its application in the Commodore 64](http://www.zimmers.net/cbmpics/cbm/c64/vic-ii.txt)
 
+# Forks 
+
+Some people have forked emudore and experimented with it, some notable forks include:
+
+* [Chris Frant's C64 and NES emulator](https://github.com/cfrantz/emudore)
+* [Scott Hutter's bare metal x86-64 emulator](https://github.com/xlar54/emudore64)
+
 # License
 
 I don't think anybody will ever dare to use this for an actual useful purpose, but just in case, 
