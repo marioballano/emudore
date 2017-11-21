@@ -697,10 +697,21 @@ void Vic::draw_sprite(int x, int y, int sprite, int row)
     {
       if(ISSET_BIT(data,j))
       {
+        int new_x = x + i*8 + 8 - j;
+        int color = sprite_colors_[sprite];
+        int border38 = 0;
+        /* check 38 cols mode */
+        if(!ISSET_BIT(cr2_,3))
+          border38 = 8;
+        /* check bounds */
+        if(new_x <= kGFirstCol+border38 ||  y < kGFirstCol ||
+           new_x > kGResX+kGFirstCol-border38 || y >= kGResY+kGFirstCol)
+          color = border_color_;
+        /* update pixel */
         io_->screen_update_pixel(
-          x + i*8 + 8 - j,          
+          new_x,
           y,
-          sprite_colors_[sprite]);
+          color);
       }
     }
   }
