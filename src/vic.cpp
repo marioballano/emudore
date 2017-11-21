@@ -525,6 +525,12 @@ void Vic::draw_raster_char_mode()
     /* draw characters */
     for(int column=0; column < kGCols ; column++)
     {
+      /* check 38 cols mode */
+      if(!ISSET_BIT(cr2_,3))
+      {
+        if (column == 0) continue; 
+        if (column == kGCols -1 ) continue; 
+      }
       int x = kGFirstCol + column * 8;
       int line = rstr - kGFirstLine;
       int row = line/8;
