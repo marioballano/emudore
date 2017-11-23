@@ -134,7 +134,7 @@ a fresh copy of radare from [github](https://github.com/radare/radare2)
 
 Then fire the emulator up and connect with radare:
 
-    r2 -a 6502 rap://localhost:9999//
+    r2 -w -a 6502 rap://localhost:9999//
 
 For now radare can just read and modify memory, further support might be coming
 down the line once [this feature](https://github.com/radare/radare2/issues/4173) 
