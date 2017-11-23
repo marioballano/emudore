@@ -689,29 +689,43 @@ void Vic::draw_mcsprite(int x, int y, int sprite, int row)
 
 void Vic::draw_sprite(int x, int y, int sprite, int row)
 {
+  int swid = is_double_height_sprite(sprite) ? 2 : 1;
   uint16_t addr = get_sprite_ptr(sprite);
-  for (int i=0; i < 3 ; i++)
+  for(int w=0; w < swid ; w++ )
   {
-    uint8_t  data = mem_->vic_read_byte(addr + row * 3 + i);
-    for (int j=0; j < 8; j++)
+    for (int i=0; i < 3 ; i++)
     {
-      if(ISSET_BIT(data,j))
+      uint8_t  data = mem_->vic_read_byte(addr + row * 3 + i);
+      for (int j=0; j < 8; j++)
       {
-        int new_x = x + i*8 + 8 - j;
-        int color = sprite_colors_[sprite];
-        int border38 = 0;
-        /* check 38 cols mode */
-        if(!ISSET_BIT(cr2_,3))
-          border38 = 8;
-        /* check bounds */
-        if(new_x <= kGFirstCol+border38 ||  y < kGFirstCol ||
-           new_x > kGResX+kGFirstCol-border38 || y >= kGResY+kGFirstCol)
-          color = border_color_;
-        /* update pixel */
-        io_->screen_update_pixel(
-          new_x,
-          y,
-          color);
+        if(ISSET_BIT(data,j))
+        {
+          int new_x = (x+w + (i*8*swid) + (8*swid) - (j*swid)) ;
+          int color = sprite_colors_[sprite];
+          int side_border_offset = 0;
+          int top_border_offset  = 0;
+          int btm_border_offset  = 0;
+          /* check 38 cols mode */
+          if(!ISSET_BIT(cr2_,3))
+            side_border_offset = 8;
+          /* check 24 line mode */
+          if(!ISSET_BIT(cr1_,3))
+          {
+            top_border_offset = 2;
+            btm_border_offset = 4;
+          }
+          /* check bounds */
+          if(new_x <= kGFirstCol+side_border_offset ||
+             y < kGFirstCol + top_border_offset ||
+             new_x > kGResX+kGFirstCol-side_border_offset ||
+             y >= kGResY+kGFirstCol - btm_border_offset)
+            color = border_color_;
+          /* update pixel */
+          io_->screen_update_pixel(
+            new_x,
+            y,
+            color);
+        }
       }
     }
   }
