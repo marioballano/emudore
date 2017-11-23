@@ -110,6 +110,7 @@ uint8_t * Debugger::emu_read_mem(size_t sz)
 
 void Debugger::emu_write_mem(uint8_t *mem, size_t sz)
 {
+  D("here\n");
   for(size_t i = 0 ; i < sz ; i++)
   {
     mem_->write_byte(offset_++,mem[i]);
@@ -180,6 +181,7 @@ bool Debugger::emulate()
         D("Debugger: client disconnected\n");
         break;
       }
+      D("command received %d\n",buff[0]);
       switch(buff[0])
       {
       case RAP_RMT_OPEN:
@@ -198,6 +200,7 @@ bool Debugger::emulate()
         send(sockfd,&offset,8,0);
         break;
       case RAP_RMT_READ:
+        D("read\n");
         recv(sockfd,&buff[1],4,0);
         sz = ntohl(*(uint32_t*)&buff[1]);
         buff[0] = RAP_RMT_READ | RAP_RMT_REPLY;
@@ -207,6 +210,7 @@ bool Debugger::emulate()
         free(mem);
         break;
       case RAP_RMT_WRITE:
+        D("write\n");
         recv(sockfd,&buff[1],4,0);
         sz = ntohl(*(uint32_t*)&buff[1]);
         recv(sockfd,&buff[5],sz,0);

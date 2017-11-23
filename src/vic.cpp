@@ -689,7 +689,7 @@ void Vic::draw_mcsprite(int x, int y, int sprite, int row)
 
 void Vic::draw_sprite(int x, int y, int sprite, int row)
 {
-  int swid = is_double_height_sprite(sprite) ? 2 : 1;
+  int swid = is_double_width_sprite(sprite) ? 2 : 1;
   uint16_t addr = get_sprite_ptr(sprite);
   for(int w=0; w < swid ; w++ )
   {
