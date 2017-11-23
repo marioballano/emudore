@@ -735,6 +735,10 @@ void Vic::draw_raster_sprites()
       {
         int row = sp_y - my_[n];
         int x = kSpritesFirstCol + sprite_x(n);
+        if(is_double_height_sprite(n))
+        {
+          row = (sp_y - my_[n])/2;
+        }
         if(is_multicolor_sprite(n))
         {
           draw_mcsprite(x,y,n,row);
