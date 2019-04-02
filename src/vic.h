@@ -85,6 +85,7 @@ class Vic
     /* graphics */ 
     inline void draw_raster_char_mode();
     inline void draw_raster_bitmap_mode();
+    inline void draw_ext_backcolor_char(int x, int y, uint8_t data, uint8_t color, uint8_t c);
     inline void draw_raster_sprites();
     inline void draw_sprite(int x, int y, int sprite, int row);
     inline void draw_mcsprite(int x, int y, int sprite, int row);

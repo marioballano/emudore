@@ -85,6 +85,7 @@ bool Vic::emulate()
       {
       case kCharMode:
       case kMCCharMode:
+      case kExtBgMode:
         draw_raster_char_mode();
         break;
       case kBitmapMode:
@@ -434,6 +435,14 @@ uint8_t Vic::get_char_color(int column, int row)
  */
 uint8_t Vic::get_char_data(int chr, int line)
 {
+
+  if(graphic_mode_ == kExtBgMode)
+  {
+    if(chr >= 64 && chr <= 127) chr = chr - 64;
+    else if(chr >= 128 && chr <= 191) chr = chr - 128;
+    else if(chr >= 192 && chr <= 255) chr = chr - 192;
+  }
+
   uint16_t addr = char_mem_ + (chr * 8) + line;
   return mem_->vic_read_byte(addr);
 }
@@ -479,6 +488,32 @@ void Vic::draw_char(int x, int y, uint8_t data, uint8_t color)
   }
 }
 
+void Vic::draw_ext_backcolor_char(int x, int y, uint8_t data, uint8_t color, uint8_t c)
+{
+  for(int i=0 ; i < 8 ; i++)
+  {
+    int xoffs = x + 8 - i + horizontal_scroll();
+    /* don't draw outside (due to horizontal scroll) */
+    if(xoffs > kGFirstCol + kGResX)
+      continue;
+       
+    /* draw pixel */
+    if(ISSET_BIT(data,i))
+    {
+      io_->screen_update_pixel(xoffs,y,color);
+    }
+    else
+    {
+      if(c >=64 && c <= 127)
+	      io_->screen_update_pixel(xoffs,y,bgcolor_[1]);
+      if(c >=128 && c <= 191)
+	      io_->screen_update_pixel(xoffs,y,bgcolor_[2]);
+      if(c >=192 && c <= 255)
+	      io_->screen_update_pixel(xoffs,y,bgcolor_[3]);
+    }
+  }
+}
+
 void Vic::draw_mcchar(int x, int y, uint8_t data, uint8_t color)
 {
   for(int i=0 ; i < 4 ; i++)
@@ -518,21 +553,23 @@ void Vic::draw_raster_char_mode()
 {
   int rstr = raster_counter();
   int y = rstr - kFirstVisibleLine;
-  if((rstr >= kGFirstLine) && 
-     (rstr < kGLastLine) && 
-     !is_screen_off())
+  if((rstr >= kGFirstLine) && (rstr < kGLastLine) && !is_screen_off())
   {
     /* draw background */
-    io_->screen_draw_rect(kGFirstCol,y,kGResX,bgcolor_[0]);
+    if(!ISSET_BIT(cr2_,3)) // 38 columns
+      io_->screen_draw_rect(kGFirstCol+8,y,kGResX-16,bgcolor_[0]);
+    else
+      io_->screen_draw_rect(kGFirstCol,y,kGResX,bgcolor_[0]);
+    
     /* draw characters */
     for(int column=0; column < kGCols ; column++)
     {
-      /* check 38 cols mode */
-      if(!ISSET_BIT(cr2_,3))
+      if(!ISSET_BIT(cr2_,3)) // 38 columns
       {
-        if (column == 0) continue; 
-        if (column == kGCols -1 ) continue; 
+	if(column == 0) continue;
+	if(column == kGCols-1) continue;
       }
+    
       int x = kGFirstCol + column * 8;
       int line = rstr - kGFirstLine;
       int row = line/8;
@@ -546,8 +583,10 @@ void Vic::draw_raster_char_mode()
       /* draw character */
       if(graphic_mode_ == kMCCharMode && ISSET_BIT(color,3))
         draw_mcchar(x,y,data,(color&0x7));
-      else
-        draw_char(x,y,data,color);
+      else if(graphic_mode_ == kCharMode)
+	      draw_char(x,y,data,color);
+      else if(graphic_mode_ == kExtBgMode)
+	      draw_ext_backcolor_char(x,y,data,color,c);
     }
   }
 }
