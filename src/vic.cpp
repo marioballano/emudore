@@ -128,6 +128,7 @@ uint8_t Vic::read_register(uint8_t r)
   case 0x4:
   case 0x6:
   case 0x8:
+  case 0xa:
   case 0xc:
   case 0xe:
     retval = mx_[r >> 1];
@@ -260,6 +261,7 @@ void Vic::write_register(uint8_t r, uint8_t v)
   case 0x4:
   case 0x6:
   case 0x8:
+  case 0xa:
   case 0xc:
   case 0xe:
     mx_[r >> 1] = v;
