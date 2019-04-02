@@ -648,42 +648,70 @@ void Vic::draw_raster_bitmap_mode()
 
 void Vic::draw_mcsprite(int x, int y, int sprite, int row)
 {
+  uint8_t swid = is_double_width_sprite(sprite) == true ? 2 : 1;
   uint16_t addr = get_sprite_ptr(sprite);
-  for (int i=0; i < 3 ; i++)
+  
+  uint8_t side_border_offset = 0;
+  uint8_t top_border_offset=0;
+  uint8_t btm_border_offset=0;
+  
+  // 38 col mode
+  if(!ISSET_BIT(cr2_,3)) 
+    side_border_offset = 8;
+  
+  // 24 line mode
+  if(!ISSET_BIT(cr1_,3)) 
   {
-    uint8_t  data = mem_->vic_read_byte(addr + row * 3 + i);
-    for (int j=0; j < 4; j++)
+    top_border_offset=2;
+    btm_border_offset=4;
+  }
+  uint16_t minX = kGFirstCol+side_border_offset;
+  uint16_t maxX = kGResX+kGFirstCol-side_border_offset;
+  uint16_t minY = kGFirstCol + top_border_offset;
+  uint16_t maxY = kGResY+kGFirstCol - btm_border_offset;
+
+  for(int w=0;w<swid;w++)
+  {    
+    for (int i=0; i < 3 ; i++)
     {
-      /* color */
-      uint8_t c = 0;
-      /* color source */
-      uint8_t cs = ((data >> j*2) & 0x3);
-      switch(cs)
+      uint8_t  data = mem_->vic_read_byte(addr + row * 3 + i);
+      for (int j=0; j < 4; j++)
       {
-      /* transparent */
-      case 0:
-        break;
-      case 1:
-        c = sprite_shared_colors_[0];
-        break;
-      case 2:
-        c = sprite_colors_[sprite];
-        break;
-      case 3:
-        c = sprite_shared_colors_[1]; 
-        break;
-      }
-      /* draw if not transparent */
-      if(cs != 0)
-      {
-        io_->screen_update_pixel(
-          x + i*8 + 8 - j * 2,          
-          y,
-          c);
-        io_->screen_update_pixel(
-          x + i*8 + 8 - j * 2 + 1,          
-          y,
-          c);
+	/* color */
+	uint8_t c = 0;
+	/* color source */
+	uint8_t cs = ((data >> j*2) & 0x3);
+	switch(cs)
+	{
+	/* transparent */
+	case 0:
+	  break;
+	case 1:
+	  c = sprite_shared_colors_[0];
+	  break;
+	case 2:
+	  c = sprite_colors_[sprite];
+	  break;
+	case 3:
+	  c = sprite_shared_colors_[1]; 
+	  break;
+	}
+	/* draw if not transparent */
+	if(cs != 0)
+	{
+	  uint16_t newX = (x+w+(i*8*swid) + (8*swid) - (j*swid*2));
+	  
+	  if(newX > minX && y >= minY && newX <= maxX && y < maxY)
+	    io_->screen_update_pixel(newX,y,c);
+	  
+	  newX++;
+	  if(newX > minX && y >= minY && newX <= maxX && y < maxY)
+	    io_->screen_update_pixel(newX,y,c);
+	  
+	  newX++;
+	  if(is_double_width_sprite(sprite) && newX > minX && y >= minY && newX <= maxX && y < maxY)
+	    io_->screen_update_pixel(newX,y,c);
+	}
       }
     }
   }      
@@ -691,43 +719,44 @@ void Vic::draw_mcsprite(int x, int y, int sprite, int row)
 
 void Vic::draw_sprite(int x, int y, int sprite, int row)
 {
-  int swid = is_double_width_sprite(sprite) ? 2 : 1;
+  uint8_t swid = is_double_width_sprite(sprite) == true ? 2 : 1;
   uint16_t addr = get_sprite_ptr(sprite);
-  for(int w=0; w < swid ; w++ )
+
+  uint8_t side_border_offset = 0;
+  uint8_t top_border_offset=0;
+  uint8_t btm_border_offset=0;
+  
+  uint16_t minX = kGFirstCol+side_border_offset;
+  uint16_t maxX = kGResX+kGFirstCol-side_border_offset;
+  uint16_t minY = kGFirstCol + top_border_offset;
+  uint16_t maxY = kGResY+kGFirstCol - btm_border_offset;
+  
+  // 38 col mode
+  if(!ISSET_BIT(cr2_,3)) 
+    side_border_offset = 8;
+  
+  // 24 line mode
+  if(!ISSET_BIT(cr1_,3)) 
+  {
+    top_border_offset=2;
+    btm_border_offset=4;
+  }
+  
+  for(int w=0;w<swid;w++)
   {
     for (int i=0; i < 3 ; i++)
-    {
-      uint8_t  data = mem_->vic_read_byte(addr + row * 3 + i);
+    { 
+      uint8_t data = mem_->vic_read_byte(addr + row * 3 + i);
+      
       for (int j=0; j < 8; j++)
-      {
-        if(ISSET_BIT(data,j))
-        {
-          int new_x = (x+w + (i*8*swid) + (8*swid) - (j*swid)) ;
-          int color = sprite_colors_[sprite];
-          int side_border_offset = 0;
-          int top_border_offset  = 0;
-          int btm_border_offset  = 0;
-          /* check 38 cols mode */
-          if(!ISSET_BIT(cr2_,3))
-            side_border_offset = 8;
-          /* check 24 line mode */
-          if(!ISSET_BIT(cr1_,3))
-          {
-            top_border_offset = 2;
-            btm_border_offset = 4;
-          }
-          /* check bounds */
-          if(new_x <= kGFirstCol+side_border_offset ||
-             y < kGFirstCol + top_border_offset ||
-             new_x > kGResX+kGFirstCol-side_border_offset ||
-             y >= kGResY+kGFirstCol - btm_border_offset)
-            color = border_color_;
-          /* update pixel */
-          io_->screen_update_pixel(
-            new_x,
-            y,
-            color);
-        }
+      {  
+	if(ISSET_BIT(data,j))
+	{
+	  uint16_t newX = (x+w + (i*8*swid) + (8*swid) - (j*swid)) ;
+	  
+	  if(newX > minX && y >= minY && newX <= maxX && y < maxY)
+	    io_->screen_update_pixel(newX,y,sprite_colors_[sprite]);
+	}
       }
     }
   }
